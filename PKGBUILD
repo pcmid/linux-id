@@ -5,6 +5,7 @@
 # Contributor: Tobias Powalowski <tpowa@archlinux.org>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 # Contributor: Joan Figueras <ffigue at gmail dot com>
+# Contributor: pcmid <plzcmid at gmail dot com>
 
 ##
 ## 这个包默认就会安装内核头文件和内核了，不需要纠结
@@ -17,8 +18,9 @@
 ## Default is: 0 => generic
 ## Good option if your package is for one machine: 42 => native
 ## 我个人的恶趣味，就是选择 native，自动优化，当然各位根据自己的实际情况做出选择也是可以的
+## change by pcmid: zen2
 if [ -z ${_microarchitecture+x} ]; then
-  _microarchitecture=99
+  _microarchitecture=14
 fi
 
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
@@ -55,7 +57,8 @@ fi
 
 # Tweak kernel options prior to a build via nconfig
 # 我觉得还是选上，这样给大家微调的空间
-_makenconfig=y
+# change by pcmid: set to no
+_makenconfig=n
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
@@ -104,6 +107,9 @@ export KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-makepkg}
 export KBUILD_BUILD_TIMESTAMP=${KBUILD_BUILD_TIMESTAMP:-$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})}
 
 prepare() {
+  # Decompress patch
+  cat ../patch-${pkgver}-xanmod${xanmod}-cacule.xz | xz -d > patch-${pkgver}-xanmod${xanmod}-cacule
+
   cd linux-${_major}
 
   # Apply Xanmod patch
@@ -195,7 +201,7 @@ prepare() {
 
 build() {
   cd linux-${_major}
-  make all
+  make -j 12 all
 }
 
 _package() {
