@@ -52,7 +52,7 @@ fi
 # 不知道大家是否了解 module_db 它类似会检测你的系统平时经常用的模块，这样将来可以给出建议到 .config
 # 编译极简化的内核。
 if [ -z ${_localmodcfg} ]; then
-  _localmodcfg=n
+  _localmodcfg=y
 fi
 
 # Tweak kernel options prior to a build via nconfig
@@ -193,7 +193,9 @@ prepare() {
   make -s kernelrelease > version
   msg2 "Prepared %s version %s" "$pkgbase" "$(<version)"
 
-  [[ -z "$_makenconfig" ]] || make nconfig
+  if [ x"${_makenconfig}" == x"y" ];then
+    make nconfig
+  fi
 
   # save configuration for later reuse
   cat .config > "${startdir}/config.last"
