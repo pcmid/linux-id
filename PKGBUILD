@@ -52,18 +52,18 @@ fi
 # 不知道大家是否了解 module_db 它类似会检测你的系统平时经常用的模块，这样将来可以给出建议到 .config
 # 编译极简化的内核。
 if [ -z ${_localmodcfg} ]; then
-  _localmodcfg=y
+  _localmodcfg=n
 fi
 
 # Tweak kernel options prior to a build via nconfig
 # 我觉得还是选上，这样给大家微调的空间
 # change by pcmid: set to no
-_makenconfig=n
+_makenconfig=y
 
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.11.10
+pkgver=5.11.12
 _major=5.11
 _branch=5.x
 xanmod=1
