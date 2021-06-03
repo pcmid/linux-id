@@ -13,15 +13,6 @@
 ##
 ##   Example: env _microarchitecture=25 use_numa=n use_tracers=n use_pds=n makepkg -sc
 ##
-## Look inside 'choose-gcc-optimization.sh' to choose your microarchitecture
-## Valid numbers between: 0 to 42
-## Default is: 0 => generic
-## Good option if your package is for one machine: 42 => native
-## 我个人的恶趣味，就是选择 native，自动优化，当然各位根据自己的实际情况做出选择也是可以的
-## change by pcmid: zen2
-if [ -z ${_microarchitecture+x} ]; then
-  _microarchitecture=14
-fi
 
 ## Disable NUMA since most users do not have multiple processors. Breaks CUDA/NvEnc.
 ## Archlinux and Xanmod enable it by default.
@@ -41,49 +32,33 @@ if [ -z ${use_tracers+x} ]; then
   use_tracers=n
 fi
 
-# Compile ONLY used modules to VASTLYreduce the number of modules built
-# and the build time.
-#
-# To keep track of which modules are needed for your specific system/hardware,
-# give module_db script a try: https://aur.archlinux.org/packages/modprobed-db
-# This PKGBUILD read the database kept if it exists
-#
-# More at this wiki page ---> https://wiki.archlinux.org/index.php/Modprobed-db
-# 不知道大家是否了解 module_db 它类似会检测你的系统平时经常用的模块，这样将来可以给出建议到 .config
-# 编译极简化的内核。
-if [ -z ${_localmodcfg} ]; then
-  _localmodcfg=n
-fi
-
-# Tweak kernel options prior to a build via nconfig
-# 我觉得还是选上，这样给大家微调的空间
-# change by pcmid: set to no
-_makenconfig=y
-
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.11.15
-_major=5.11
+pkgver=5.12.7
+_major=5.12
 _branch=5.x
 xanmod=1
-pkgrel=${xanmod}
+pkgrel=1
 pkgdesc='Linux Xanmod. Branch with Cacule scheduler by Hamad Marri'
 url="http://www.xanmod.org/"
 arch=(x86_64)
 
 license=(GPL2)
 makedepends=(
-  xmlto kmod inetutils bc libelf cpio
+  xmlto kmod inetutils bc libelf cpio python3
 )
 options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}-cacule/patch-${pkgver}-xanmod${xanmod}-cacule.xz"
-        choose-gcc-optimization.sh
         'sphinx-workaround.patch'
-        '0002-UKSM.patch')
+        '0002-UKSM.patch'
+        'choose-gcc-optimization.sh'
+        '.config'
+)
+
 validpgpkeys=(
     'ABAF11C65A2970B130ABE3C479BE3E4300411886' # Linux Torvalds
     '647F28654894E3BD457199BE38DBBDC86092693E' # Greg Kroah-Hartman
@@ -95,21 +70,19 @@ for _patch in $_commits; do
     source+=("${_patch}.patch::https://git.archlinux.org/linux.git/patch/?id=${_patch}")
 done
 
-sha256sums=('04f07b54f0d40adfab02ee6cbd2a942c96728d87c1ef9e120d0cb9ba3fe067b4'
-            'b8bc4f6312bdc086c0fecd1cce1ab1ee12b7b4eff63f88239a65461d9ec5e91b'
+sha256sums=('7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366'
             'SKIP'
-            'e840e41f0f91108f63fd6e085c93b02daa78729268bc31be7be7fb355203e38a'
+            '2ea8601704d0597986fd681cf98849278be84bc6c68c59bb6e5cc9a192890e90'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
-            'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58')
+            'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58'
+            'e840e41f0f91108f63fd6e085c93b02daa78729268bc31be7be7fb355203e38a'
+            '51f8a0aec1c7b79a24b2d229c038bded3774d9aba66583f6ca1a4f668f2a1499')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
 export KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-makepkg}
 export KBUILD_BUILD_TIMESTAMP=${KBUILD_BUILD_TIMESTAMP:-$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})}
 
 prepare() {
-  # Decompress patch
-  cat ../patch-${pkgver}-xanmod${xanmod}-cacule.xz | xz -d > patch-${pkgver}-xanmod${xanmod}-cacule
-
   cd linux-${_major}
 
   # Apply Xanmod patch
@@ -118,7 +91,7 @@ prepare() {
   msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
-  echo "${pkgbase#linux-xanmod}" > localversion.20-pkgname
+  echo "${pkgbase#linux-xanmod-cacule}" > localversion.20-pkgname
 
   # Archlinux patches
   local src
@@ -129,6 +102,9 @@ prepare() {
     msg2 "Applying patch $src..."
     patch -Np1 < "../$src"
   done
+
+  make defconfig
+  cp ../kconfig .config
 
   # CONFIG_STACK_VALIDATION gives better stack traces. Also is enabled in all official kernel packages by Archlinux team
   scripts/config --enable CONFIG_STACK_VALIDATION
@@ -149,61 +125,13 @@ prepare() {
     scripts/config --disable CONFIG_NUMA
   fi
 
-  # Let's user choose microarchitecture optimization in GCC
-  sh ${srcdir}/choose-gcc-optimization.sh $_microarchitecture
-
-  # This is intended for the people that want to build this package with their own config
-  # Put the file "myconfig" at the package folder to use this feature
-  # If it's a full config, will be replaced
-  # If not, you should use scripts/config commands, one by line
-  if [ -f "${startdir}/myconfig" ]; then
-    if ! grep -q 'scripts/config' "${startdir}/myconfig"; then
-      # myconfig is a full config file. Replacing default .config
-      msg2 "Using user CUSTOM config..."
-      cp -f "${startdir}"/myconfig .config
-    else
-      # myconfig is a partial file. Applying every line
-      msg2 "Applying configs..."
-      cat "${startdir}"/myconfig | while read -r _linec ; do
-        if echo "$_linec" | grep "scripts/config" ; then
-          set -- $_linec
-          "$@"
-        else
-          warning "Line format incorrect, ignoring..."
-        fi
-      done
-    fi
-    echo
-  fi
-
-  make olddefconfig
-
-  ### Optionally load needed modules for the make localmodconfig
-  # See https://aur.archlinux.org/packages/modprobed-db
-  if [ "$_localmodcfg" = "y" ]; then
-    if [ -f $HOME/.config/modprobed.db ]; then
-      msg2 "Running Steven Rostedt's make localmodconfig now"
-      make LSMOD=$HOME/.config/modprobed.db localmodconfig
-    else
-      msg2 "No modprobed.db data found"
-      exit
-    fi
-  fi
-
   make -s kernelrelease > version
   msg2 "Prepared %s version %s" "$pkgbase" "$(<version)"
-
-  if [ x"${_makenconfig}" == x"y" ];then
-    make nconfig
-  fi
-
-  # save configuration for later reuse
-  cat .config > "${startdir}/config.last"
 }
 
 build() {
   cd linux-${_major}
-  make -j 12 all
+  make all
 }
 
 _package() {
