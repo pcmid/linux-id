@@ -46,7 +46,7 @@ arch=(x86_64)
 
 license=(GPL2)
 makedepends=(
-  xmlto kmod inetutils bc libelf cpio python3
+  xmlto kmod inetutils bc libelf cpio python3 pahole
 )
 options=('!strip')
 _srcname="linux-${pkgver}-xanmod${xanmod}"
