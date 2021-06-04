@@ -55,8 +55,7 @@ source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar
         "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}-cacule/patch-${pkgver}-xanmod${xanmod}-cacule.xz"
         'sphinx-workaround.patch'
         '0002-UKSM.patch'
-        'choose-gcc-optimization.sh'
-        '.config'
+        'kconfig'
 )
 
 validpgpkeys=(
@@ -75,7 +74,6 @@ sha256sums=('7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366'
             '2ea8601704d0597986fd681cf98849278be84bc6c68c59bb6e5cc9a192890e90'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
             'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58'
-            'e840e41f0f91108f63fd6e085c93b02daa78729268bc31be7be7fb355203e38a'
             '51f8a0aec1c7b79a24b2d229c038bded3774d9aba66583f6ca1a4f668f2a1499')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
