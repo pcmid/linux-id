@@ -1,0 +1,31 @@
+---
+kind: pipeline
+type: kubernetes
+name: linux-amd64
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build
+  pull: always
+  image: pcmid/arch-builder
+  when:
+    event:
+    - push
+
+- name: release
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: GITHUB_API_TOKEN
+    files: release/*
+  when:
+    event:
+    - tag
+
+trigger:
+  branch:
+  - master
+
