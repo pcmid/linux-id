@@ -35,7 +35,7 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.12.7
+pkgver=5.12.9
 _major=5.12
 _branch=5.x
 xanmod=1
@@ -89,7 +89,7 @@ prepare() {
   msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
   echo "-$pkgrel" > localversion.10-pkgrel
-  echo "${pkgbase#linux-xanmod-cacule}" > localversion.20-pkgname
+  echo "${pkgbase#linux-xanmod-cacule-uksm}" > localversion.20-pkgname
 
   # Archlinux patches
   local src
