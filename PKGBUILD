@@ -74,7 +74,7 @@ sha256sums=('7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366'
             '04416f1da8d36178f2f2993c00735957a5d6505aa9150b8d60c796feb8103c1b'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
             'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58'
-            '8694f20e86e8b67c7583468adba895aea15d52a56c85371d386aee27a94e4027')
+            'a9370eb2167f58e1121abf4a2391f65ba42fcc60a4bca4a422adb9ebca5b24cc')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
 export KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-makepkg}
@@ -88,8 +88,8 @@ prepare() {
 
   msg2 "Setting version..."
   scripts/setlocalversion --save-scmversion
-  echo "-$pkgrel" > localversion.10-pkgrel
-  echo "${pkgbase#linux-xanmod-cacule-uksm}" > localversion.20-pkgname
+  echo "${pkgbase#linux-xanmod-cacule}" > localversion.10-pkgname
+  echo "-$pkgrel" > localversion.20-pkgrel
 
   # Archlinux patches
   local src
