@@ -35,7 +35,7 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.12.11
+pkgver=5.12.13
 _major=5.12
 _branch=5.x
 xanmod=1
@@ -71,7 +71,7 @@ done
 
 sha256sums=('7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366'
             'SKIP'
-            '6ac628f3841735e53d501b998c73d61138d6b8be18f3094d25097a3c34a0cfe7'
+            'b99ced5ce286a3e955ea0030de2dd6cc5b8270d3a33d5c53c5a99e33542f989b'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
             'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58'
             'a9370eb2167f58e1121abf4a2391f65ba42fcc60a4bca4a422adb9ebca5b24cc')
