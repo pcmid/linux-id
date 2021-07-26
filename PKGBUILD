@@ -35,8 +35,8 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.12.13
-_major=5.12
+pkgver=5.13.5
+_major=5.13
 _branch=5.x
 xanmod=1
 pkgrel=1
@@ -53,8 +53,8 @@ _srcname="linux-${pkgver}-xanmod${xanmod}"
 
 source=("https://cdn.kernel.org/pub/linux/kernel/v${_branch}/linux-${_major}.tar."{xz,sign}
         "https://github.com/xanmod/linux/releases/download/${pkgver}-xanmod${xanmod}-cacule/patch-${pkgver}-xanmod${xanmod}-cacule.xz"
+        "https://raw.githubusercontent.com/dolohow/uksm/master/v5.x/uksm-${_major}.patch"
         'sphinx-workaround.patch'
-        '0002-UKSM.patch'
         'kconfig'
 )
 
@@ -69,12 +69,12 @@ for _patch in $_commits; do
     source+=("${_patch}.patch::https://git.archlinux.org/linux.git/patch/?id=${_patch}")
 done
 
-sha256sums=('7d0df6f2bf2384d68d0bd8e1fe3e071d64364dcdc6002e7b5c87c92d48fac366'
+sha256sums=('3f6baa97f37518439f51df2e4f3d65a822ca5ff016aa8e60d2cc53b95a6c89d9'
             'SKIP'
-            'b99ced5ce286a3e955ea0030de2dd6cc5b8270d3a33d5c53c5a99e33542f989b'
+            '612f4b39430c91f8b1adce7fa688dbaccf75799293972cb4d5493d9d8c74e611'
+            'd38e2ee1f43bd6ca18845c80f5e68c0e597db01780004ff47607dd605e9aa086'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
-            'f00a84fd382d63cd0d47d6fd8ef6c8608b1c83ff9d6dbdd32cb985898afbbf58'
-            'a9370eb2167f58e1121abf4a2391f65ba42fcc60a4bca4a422adb9ebca5b24cc')
+            'f97503cb1daa9d15116822ca7949b0da9e180a11290674475a7e511d7f78d2c5')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
 export KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-makepkg}
