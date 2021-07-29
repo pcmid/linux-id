@@ -35,11 +35,11 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.13.5
+pkgver=5.13.6
 _major=5.13
 _branch=5.x
-xanmod=1
-pkgrel=1
+xanmod=2
+pkgrel=2
 pkgdesc='Linux Xanmod. Branch with Cacule scheduler by Hamad Marri'
 url="http://www.xanmod.org/"
 arch=(x86_64)
@@ -71,7 +71,7 @@ done
 
 sha256sums=('3f6baa97f37518439f51df2e4f3d65a822ca5ff016aa8e60d2cc53b95a6c89d9'
             'SKIP'
-            '612f4b39430c91f8b1adce7fa688dbaccf75799293972cb4d5493d9d8c74e611'
+            '26795acf0f1191bea413e98c6b129a927e20a0da59c302d4c4d9c412499144ad'
             'd38e2ee1f43bd6ca18845c80f5e68c0e597db01780004ff47607dd605e9aa086'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
             'f97503cb1daa9d15116822ca7949b0da9e180a11290674475a7e511d7f78d2c5')
