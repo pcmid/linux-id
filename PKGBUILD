@@ -35,11 +35,11 @@ fi
 ### IMPORTANT: Do no edit below this line unless you know what you're doing
 
 pkgbase=linux-xanmod-cacule-uksm
-pkgver=5.13.6
-_major=5.13
+pkgver=5.14.1
+_major=5.14
 _branch=5.x
-xanmod=2
-pkgrel=2
+xanmod=1
+pkgrel=1
 pkgdesc='Linux Xanmod. Branch with Cacule scheduler by Hamad Marri'
 url="http://www.xanmod.org/"
 arch=(x86_64)
@@ -69,12 +69,12 @@ for _patch in $_commits; do
     source+=("${_patch}.patch::https://git.archlinux.org/linux.git/patch/?id=${_patch}")
 done
 
-sha256sums=('3f6baa97f37518439f51df2e4f3d65a822ca5ff016aa8e60d2cc53b95a6c89d9'
+sha256sums=('7e068b5e0d26a62b10e5320b25dce57588cbbc6f781c090442138c9c9c3271b2'
             'SKIP'
-            '26795acf0f1191bea413e98c6b129a927e20a0da59c302d4c4d9c412499144ad'
-            'd38e2ee1f43bd6ca18845c80f5e68c0e597db01780004ff47607dd605e9aa086'
+            'c7a49605ceb4a9f50ba96fc19ec3073907b2628c9d2faebca705d14160afba30'
+            '0b4b31fd91628c3ac35aa18ae4a78900ba03474451a64d5ad17b1f8b00d095b7'
             '74339b8ad0ad99f08606c5de0dd3c38f502e29e5c6a78d6efbe656662edb8d73'
-            'f97503cb1daa9d15116822ca7949b0da9e180a11290674475a7e511d7f78d2c5')
+            '74f3901bba4a96d31a5187e9adf9b6ebc991665e86fefb1eb1963c5f0cb016ab')
 
 export KBUILD_BUILD_HOST=${KBUILD_BUILD_HOST:-archlinux}
 export KBUILD_BUILD_USER=${KBUILD_BUILD_USER:-makepkg}
